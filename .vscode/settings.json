@@ -1,0 +1,10 @@
+{
+  "editor.renderWhitespace": "selection",
+  "editor.cursorBlinking": "expand",
+  "editor.lineHeight": 1.8,
+  "editor.suggestLineHeight": 0,
+  "window.zoomLevel": 1,
+  "editor.mouseWheelZoom": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
+}
