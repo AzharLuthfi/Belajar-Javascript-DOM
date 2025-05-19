@@ -38,10 +38,10 @@
 // 4. document.querySelector() --> mengembalikan elemnet
 // -- cara selecttor nya sama kaya kita menyelek  element di CSS
 const p1 = document.querySelector(".p1");
-const linkIG = document.querySelector("#a a");
+const linkIG = document.querySelector("section#a a");
 // // -- contoh merubah property warna
 linkIG.style.color = "green";
-linkIG.style.fontSize = "20px";
+linkIG.style.fontSize = "15px";
 
 const list2 = document.querySelector("#b ul li:nth-child(2)");
 list2.style.backgroundColor = "green";
