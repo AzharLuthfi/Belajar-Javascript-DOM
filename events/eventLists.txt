@@ -1,0 +1,165 @@
+// ======================================
+// EVENT DOM JAVASCRIPT PALING PENTING
+// ======================================
+
+// 1. CLICK - Event yang paling sering digunakan
+const button = document.querySelector(".btn");
+button.addEventListener("click", function () {
+  console.log("Button diklik!");
+});
+
+// 2. DOMCONTENTLOADED - Menunggu DOM siap (tanpa gambar/resource)
+document.addEventListener("DOMContentLoaded", function () {
+  console.log("DOM sudah siap!");
+  // Inisialisasi aplikasi di sini
+});
+
+// 3. SUBMIT - Untuk handling form
+const form = document.querySelector("form");
+form.addEventListener("submit", function (e) {
+  e.preventDefault(); // Mencegah refresh halaman
+  console.log("Form di-submit");
+  // Validasi dan proses form
+});
+
+// 4. INPUT - Real-time input monitoring
+const textInput = document.querySelector("#search");
+textInput.addEventListener("input", function (e) {
+  console.log("User mengetik:", e.target.value);
+  // Live search, validation, dll
+});
+
+// 5. CHANGE - Ketika nilai input berubah (setelah lose focus)
+const select = document.querySelector("select");
+select.addEventListener("change", function (e) {
+  console.log("Pilihan berubah:", e.target.value);
+});
+
+// 6. KEYDOWN - Keyboard interaction
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    console.log("Enter ditekan");
+  }
+  if (e.key === "Escape") {
+    console.log("Escape ditekan");
+  }
+});
+
+// 7. LOAD - Semua resource (gambar, CSS, dll) sudah dimuat
+window.addEventListener("load", function () {
+  console.log("Semua resource sudah dimuat");
+});
+
+// 8. SCROLL - Saat halaman di-scroll
+window.addEventListener("scroll", function () {
+  console.log("Halaman di-scroll");
+  // Infinite scroll, sticky navigation, dll
+});
+
+// 9. RESIZE - Ketika window di-resize
+window.addEventListener("resize", function () {
+  console.log("Window di-resize");
+  // Responsive adjustments
+});
+
+// 10. FOCUS & BLUR - Input focus management
+const input = document.querySelector("input");
+input.addEventListener("focus", function () {
+  console.log("Input mendapat focus");
+});
+input.addEventListener("blur", function () {
+  console.log("Input kehilangan focus");
+});
+
+// ======================================
+// CONTOH PENGGUNAAN REAL-WORLD
+// ======================================
+
+// Search dengan live suggestions
+const searchBox = document.querySelector("#searchBox");
+searchBox.addEventListener("input", function (e) {
+  const query = e.target.value;
+  if (query.length > 2) {
+    // Panggil API untuk suggestions
+    console.log("Searching for:", query);
+  }
+});
+
+// Modal handling
+const modal = document.querySelector(".modal");
+const openBtn = document.querySelector(".open-modal");
+const closeBtn = document.querySelector(".close-modal");
+
+openBtn.addEventListener("click", function () {
+  modal.style.display = "block";
+});
+
+closeBtn.addEventListener("click", function () {
+  modal.style.display = "none";
+});
+
+// Tutup modal dengan Escape
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" && modal.style.display === "block") {
+    modal.style.display = "none";
+  }
+});
+
+// Form validation real-time
+const emailInput = document.querySelector("#email");
+emailInput.addEventListener("blur", function () {
+  const email = this.value;
+  const isValid = email.includes("@");
+  if (!isValid) {
+    this.style.borderColor = "red";
+  } else {
+    this.style.borderColor = "green";
+  }
+});
+
+// Navigation smooth scroll
+const navLinks = document.querySelectorAll("nav a");
+navLinks.forEach((link) => {
+  link.addEventListener("click", function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute("href"));
+    target.scrollIntoView({ behavior: "smooth" });
+  });
+});
+
+// ======================================
+// BEST PRACTICES
+// ======================================
+
+// 1. Gunakan addEventListener() bukan onclick
+// ✅ Baik
+element.addEventListener("click", handler);
+// ❌ Hindari
+element.onclick = handler;
+
+// 2. Selalu preventDefault() untuk form jika perlu
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+  // Custom handling
+});
+
+// 3. Event delegation untuk elemen dinamis
+document.addEventListener("click", function (e) {
+  if (e.target.matches(".dynamic-button")) {
+    console.log("Dynamic button diklik");
+  }
+});
+
+// 4. Cleanup event listeners jika perlu
+function cleanup() {
+  element.removeEventListener("click", handler);
+}
+
+// 5. Throttle/debounce untuk event yang sering terjadi
+let scrollTimeout;
+window.addEventListener("scroll", function () {
+  clearTimeout(scrollTimeout);
+  scrollTimeout = setTimeout(function () {
+    console.log("Scroll selesai");
+  }, 100);
+});

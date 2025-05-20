@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo Event DOM JavaScript Essential</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      header {
+        background: #2c3e50;
+        color: white;
+        padding: 1rem;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        transition: background 0.3s;
+      }
+
+      nav a:hover {
+        background: #34495e;
+      }
+
+      section {
+        margin: 2rem 0;
+        padding: 1.5rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+
+      .demo-box {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 5px;
+        margin: 1rem 0;
+      }
+
+      button {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 0.7rem 1.5rem;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 0.5rem;
+        transition: background 0.3s;
+      }
+
+      button:hover {
+        background: #2980b9;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 0.5rem;
+        margin: 0.5rem 0;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        transition: border-color 0.3s;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+      }
+
+      .modal-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 500px;
+      }
+
+      .close-modal {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 1.5rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+
+      .log {
+        background: #2c3e50;
+        color: white;
+        padding: 1rem;
+        border-radius: 5px;
+        max-height: 200px;
+        overflow-y: auto;
+        font-family: monospace;
+        font-size: 0.9rem;
+      }
+
+      .scroll-tracker {
+        position: fixed;
+        top: 60px;
+        right: 20px;
+        background: #e74c3c;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 5px;
+        font-size: 0.8rem;
+      }
+
+      .resize-tracker {
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: #9b59b6;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 5px;
+        font-size: 0.8rem;
+      }
+
+      .content-spacer {
+        height: 500px;
+        background: linear-gradient(45deg, #f0f0f0, #ffffff);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        color: #666;
+      }
+
+      .valid {
+        border-color: #27ae60 !important;
+      }
+
+      .invalid {
+        border-color: #e74c3c !important;
+      }
+
+      .search-results {
+        background: white;
+        border: 1px solid #ddd;
+        border-top: none;
+        border-radius: 0 0 5px 5px;
+        max-height: 150px;
+        overflow-y: auto;
+      }
+
+      .search-item {
+        padding: 0.5rem;
+        cursor: pointer;
+        border-bottom: 1px solid #eee;
+      }
+
+      .search-item:hover {
+        background: #f8f9fa;
+      }
+
+      @media (max-width: 768px) {
+        nav ul {
+          flex-direction: column;
+        }
+        .container {
+          padding: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>Demo Event DOM JavaScript Essential</h1>
+        <nav>
+          <ul>
+            <li><a href="#basic-events">Event Dasar</a></li>
+            <li><a href="#form-events">Form Events</a></li>
+            <li><a href="#keyboard-events">Keyboard Events</a></li>
+            <li><a href="#window-events">Window Events</a></li>
+            <li><a href="#advanced">Advanced</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="scroll-tracker">Scroll: <span id="scrollInfo">0px</span></div>
+    <div class="resize-tracker">Size: <span id="sizeInfo">0x0</span></div>
+
+    <div class="container">
+      <!-- 1. BASIC EVENTS -->
+      <section id="basic-events">
+        <h2>1. Event Dasar (Click, Focus, Blur)</h2>
+        <div class="demo-box">
+          <button id="clickBtn">Klik Saya! (Click Event)</button>
+          <button id="doubleClickBtn">Double Click Saya!</button>
+          <br /><br />
+          <input
+            type="text"
+            id="focusInput"
+            placeholder="Klik untuk focus (Focus/Blur Event)"
+          />
+          <br /><br />
+          <p>Status: <span id="focusStatus">Tidak ada focus</span></p>
+        </div>
+      </section>
+
+      <!-- 2. FORM EVENTS -->
+      <section id="form-events">
+        <h2>2. Form Events (Submit, Input, Change)</h2>
+        <div class="demo-box">
+          <form id="demoForm">
+            <input
+              type="text"
+              id="realTimeInput"
+              placeholder="Ketik sesuatu (Input Event - Real time)"
+            />
+            <br />
+            <input
+              type="email"
+              id="emailInput"
+              placeholder="Email (Blur validation)"
+            />
+            <br />
+            <select id="countrySelect">
+              <option value="">Pilih Negara (Change Event)</option>
+              <option value="id">Indonesia</option>
+              <option value="my">Malaysia</option>
+              <option value="sg">Singapura</option>
+              <option value="th">Thailand</option>
+            </select>
+            <br />
+            <button type="submit">Submit Form (Submit Event)</button>
+          </form>
+          <p>Input Real-time: <span id="inputDisplay"></span></p>
+          <p>Negara Dipilih: <span id="countryDisplay">Belum dipilih</span></p>
+        </div>
+      </section>
+
+      <!-- 3. KEYBOARD EVENTS -->
+      <section id="keyboard-events">
+        <h2>3. Keyboard Events (Keydown)</h2>
+        <div class="demo-box">
+          <p>Tekan tombol keyboard apapun (Focus di area ini dulu)</p>
+          <div
+            id="keyboardArea"
+            tabindex="0"
+            style="border: 2px dashed #ccc; padding: 20px; background: #f9f9f9"
+          >
+            Klik area ini lalu tekan tombol keyboard
+          </div>
+          <p>Tombol terakhir: <span id="keyDisplay">Belum ada</span></p>
+          <p style="color: #666; font-size: 0.9rem">
+            Coba tekan: Enter, Escape, Arrow keys, Space, atau huruf apapun
+          </p>
+        </div>
+      </section>
+
+      <!-- 4. SEARCH WITH LIVE SUGGESTIONS -->
+      <section>
+        <h2>4. Live Search (Input Event + Simulasi API)</h2>
+        <div class="demo-box">
+          <div style="position: relative">
+            <input
+              type="text"
+              id="searchBox"
+              placeholder="Cari nama (ketik minimal 2 huruf)"
+            />
+            <div
+              id="searchResults"
+              class="search-results"
+              style="display: none"
+            ></div>
+          </div>
+          <p style="color: #666; font-size: 0.9rem">
+            Coba ketik: "john", "jane", "bob", "alice", atau "mike"
+          </p>
+        </div>
+      </section>
+
+      <!-- 5. MODAL DEMO -->
+      <section>
+        <h2>5. Modal (Click + Escape Key)</h2>
+        <div class="demo-box">
+          <button id="openModal">Buka Modal</button>
+          <p style="color: #666; font-size: 0.9rem">
+            Modal bisa ditutup dengan klik tombol X atau tekan Escape
+          </p>
+        </div>
+      </section>
+
+      <!-- 6. WINDOW EVENTS -->
+      <section id="window-events">
+        <h2>6. Window Events (Load, Scroll, Resize)</h2>
+        <div class="demo-box">
+          <p>Status Loading: <span id="loadStatus">Loading...</span></p>
+          <p>Scroll Position: <span id="scrollPosition">0px</span></p>
+          <p>Window Size: <span id="windowSize">Calculating...</span></p>
+          <p style="color: #666; font-size: 0.9rem">
+            Scroll halaman atau resize browser untuk melihat perubahan
+          </p>
+        </div>
+      </section>
+
+      <!-- SPACER FOR SCROLLING -->
+      <div class="content-spacer">
+        <p>Scroll ke bawah untuk melihat scroll event bekerja</p>
+      </div>
+
+      <!-- 7. ADVANCED EXAMPLES -->
+      <section id="advanced">
+        <h2>7. Advanced Examples</h2>
+        <div class="demo-box">
+          <h3>Event Delegation</h3>
+          <div id="dynamicContainer">
+            <button class="dynamic-btn">Button 1</button>
+            <button class="dynamic-btn">Button 2</button>
+          </div>
+          <button id="addDynamicBtn">Tambah Button Dinamis</button>
+          <p style="color: #666; font-size: 0.9rem">
+            Button dinamis akan tetap memiliki event handler meskipun ditambah
+            setelah page load
+          </p>
+        </div>
+      </section>
+
+      <!-- LOG AREA -->
+      <section>
+        <h2>Event Log</h2>
+        <div id="eventLog" class="log">
+          <div>Event log akan muncul di sini...</div>
+        </div>
+        <button id="clearLog">Clear Log</button>
+      </section>
+
+      <!-- SPACER FOR MORE SCROLLING -->
+      <div class="content-spacer">
+        <p>Akhir halaman - lihat scroll tracker di kanan atas</p>
+      </div>
+    </div>
+
+    <!-- MODAL -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <button class="close-modal">&times;</button>
+        <h2>Ini Modal Demo</h2>
+        <p>Modal ini bisa ditutup dengan:</p>
+        <ul>
+          <li>Klik tombol X di kanan atas</li>
+          <li>Klik tombol "Tutup Modal" di bawah</li>
+          <li>Tekan tombol Escape di keyboard</li>
+          <li>Klik area gelap di luar modal</li>
+        </ul>
+        <br />
+        <button class="close-modal">Tutup Modal</button>
+      </div>
+    </div>
+
+    <script>
+      // Log utility
+      function logEvent(message) {
+        const log = document.getElementById("eventLog");
+        const time = new Date().toLocaleTimeString();
+        log.innerHTML = `<div>[${time}] ${message}</div>` + log.innerHTML;
+      }
+
+      // ======================================
+      // 1. BASIC EVENTS
+      // ======================================
+
+      // Click Event
+      document
+        .getElementById("clickBtn")
+        .addEventListener("click", function () {
+          logEvent("🖱️ Button diklik!");
+          this.style.background = "lightgreen";
+          setTimeout(() => {
+            this.style.background = "#3498db";
+          }, 300);
+        });
+
+      // Double Click Event
+      document
+        .getElementById("doubleClickBtn")
+        .addEventListener("dblclick", function () {
+          logEvent("🖱️ Double click detected!");
+          this.textContent = "Double clicked!";
+          setTimeout(() => {
+            this.textContent = "Double Click Saya!";
+          }, 1000);
+        });
+
+      // Focus & Blur Events
+      const focusInput = document.getElementById("focusInput");
+      const focusStatus = document.getElementById("focusStatus");
+
+      focusInput.addEventListener("focus", function () {
+        logEvent("🎯 Input mendapat focus");
+        focusStatus.textContent = "Input aktif";
+        focusStatus.style.color = "#27ae60";
+      });
+
+      focusInput.addEventListener("blur", function () {
+        logEvent("😶‍🌫️ Input kehilangan focus");
+        focusStatus.textContent = "Input tidak aktif";
+        focusStatus.style.color = "#e74c3c";
+      });
+
+      // ======================================
+      // 2. FORM EVENTS
+      // ======================================
+
+      // Input Event (Real-time)
+      document
+        .getElementById("realTimeInput")
+        .addEventListener("input", function (e) {
+          const value = e.target.value;
+          document.getElementById("inputDisplay").textContent = value;
+          logEvent(`⌨️ Input real-time: "${value}"`);
+        });
+
+      // Email Validation on Blur
+      document
+        .getElementById("emailInput")
+        .addEventListener("blur", function () {
+          const email = this.value;
+          const isValid = email.includes("@") && email.includes(".");
+
+          if (email.length > 0) {
+            if (isValid) {
+              this.className = "valid";
+              logEvent(`✅ Email valid: ${email}`);
+            } else {
+              this.className = "invalid";
+              logEvent(`❌ Email tidak valid: ${email}`);
+            }
+          } else {
+            this.className = "";
+          }
+        });
+
+      // Select Change Event
+      document
+        .getElementById("countrySelect")
+        .addEventListener("change", function (e) {
+          const value = e.target.value;
+          const text = e.target.options[e.target.selectedIndex].text;
+          document.getElementById("countryDisplay").textContent = value
+            ? text
+            : "Belum dipilih";
+          logEvent(`🌍 Negara dipilih: ${text}`);
+        });
+
+      // Form Submit Event
+      document
+        .getElementById("demoForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          logEvent("📝 Form di-submit (dicegah redirect)");
+          alert(
+            "Form berhasil di-submit!\n(Page tidak refresh karena preventDefault)"
+          );
+        });
+
+      // ======================================
+      // 3. KEYBOARD EVENTS
+      // ======================================
+
+      const keyboardArea = document.getElementById("keyboardArea");
+      const keyDisplay = document.getElementById("keyDisplay");
+
+      keyboardArea.addEventListener("keydown", function (e) {
+        keyDisplay.textContent = `${e.key} (Code: ${e.code})`;
+        logEvent(`⌨️ Key pressed: ${e.key}`);
+
+        // Special keys
+        if (e.key === "Enter") {
+          logEvent("✨ Enter key pressed!");
+        } else if (e.key === "Escape") {
+          logEvent("🚪 Escape key pressed!");
+        }
+      });
+
+      // Global Escape key for modal
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          const modal = document.getElementById("modal");
+          if (modal.style.display === "block") {
+            modal.style.display = "none";
+            logEvent("🚪 Modal ditutup dengan Escape");
+          }
+        }
+      });
+
+      // ======================================
+      // 4. LIVE SEARCH
+      // ======================================
+
+      const mockData = [
+        "John Doe",
+        "Jane Smith",
+        "Bob Johnson",
+        "Alice Brown",
+        "Mike Wilson",
+        "Sarah Davis",
+        "Chris Lee",
+        "Emma White",
+      ];
+
+      document
+        .getElementById("searchBox")
+        .addEventListener("input", function (e) {
+          const query = e.target.value.toLowerCase();
+          const resultsDiv = document.getElementById("searchResults");
+
+          if (query.length >= 2) {
+            const filtered = mockData.filter((name) =>
+              name.toLowerCase().includes(query)
+            );
+
+            if (filtered.length > 0) {
+              resultsDiv.innerHTML = filtered
+                .map((name) => `<div class="search-item">${name}</div>`)
+                .join("");
+              resultsDiv.style.display = "block";
+              logEvent(`🔍 Search: "${query}" - ${filtered.length} results`);
+            } else {
+              resultsDiv.innerHTML =
+                '<div class="search-item">Tidak ada hasil</div>';
+              resultsDiv.style.display = "block";
+            }
+          } else {
+            resultsDiv.style.display = "none";
+          }
+        });
+
+      // Search result click
+      document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("search-item")) {
+          document.getElementById("searchBox").value = e.target.textContent;
+          document.getElementById("searchResults").style.display = "none";
+          logEvent(`👆 Selected: ${e.target.textContent}`);
+        }
+      });
+
+      // Hide search results when clicking outside
+      document.addEventListener("click", function (e) {
+        if (
+          !e.target.closest("#searchBox") &&
+          !e.target.closest("#searchResults")
+        ) {
+          document.getElementById("searchResults").style.display = "none";
+        }
+      });
+
+      // ======================================
+      // 5. MODAL
+      // ======================================
+
+      const modal = document.getElementById("modal");
+      const openBtn = document.getElementById("openModal");
+      const closeBtns = document.querySelectorAll(".close-modal");
+
+      openBtn.addEventListener("click", function () {
+        modal.style.display = "block";
+        logEvent("🪟 Modal dibuka");
+      });
+
+      closeBtns.forEach((btn) => {
+        btn.addEventListener("click", function () {
+          modal.style.display = "none";
+          logEvent("❌ Modal ditutup dengan tombol");
+        });
+      });
+
+      // Close modal when clicking outside
+      modal.addEventListener("click", function (e) {
+        if (e.target === modal) {
+          modal.style.display = "none";
+          logEvent("🎯 Modal ditutup dengan klik outside");
+        }
+      });
+
+      // ======================================
+      // 6. WINDOW EVENTS
+      // ======================================
+
+      // Load Event
+      window.addEventListener("load", function () {
+        document.getElementById("loadStatus").textContent =
+          "Semua resource selesai dimuat";
+        document.getElementById("loadStatus").style.color = "#27ae60";
+        logEvent("🚀 Window load complete");
+      });
+
+      // DOMContentLoaded (executed before load)
+      document.addEventListener("DOMContentLoaded", function () {
+        logEvent("🎯 DOM Content Loaded");
+      });
+
+      // Scroll Event (with throttling)
+      let scrollTimeout;
+      window.addEventListener("scroll", function () {
+        const scrollTop =
+          window.pageYOffset || document.documentElement.scrollTop;
+        document.getElementById("scrollPosition").textContent =
+          Math.round(scrollTop) + "px";
+        document.getElementById("scrollInfo").textContent =
+          Math.round(scrollTop) + "px";
+
+        // Throttled logging
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          logEvent(`📜 Scrolled to: ${Math.round(scrollTop)}px`);
+        }, 500);
+      });
+
+      // Resize Event (with throttling)
+      let resizeTimeout;
+      function updateWindowSize() {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        document.getElementById(
+          "windowSize"
+        ).textContent = `${width}x${height}px`;
+        document.getElementById("sizeInfo").textContent = `${width}x${height}`;
+      }
+
+      window.addEventListener("resize", function () {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          updateWindowSize();
+          logEvent(
+            `📐 Window resized to: ${window.innerWidth}x${window.innerHeight}`
+          );
+        }, 100);
+      });
+
+      // Initial size update
+      updateWindowSize();
+
+      // ======================================
+      // 7. ADVANCED - Event Delegation
+      // ======================================
+
+      // Event delegation for dynamic buttons
+      document
+        .getElementById("dynamicContainer")
+        .addEventListener("click", function (e) {
+          if (e.target.classList.contains("dynamic-btn")) {
+            logEvent(`🔄 Dynamic button clicked: ${e.target.textContent}`);
+            e.target.style.background = "#e74c3c";
+            setTimeout(() => {
+              e.target.style.background = "#3498db";
+            }, 300);
+          }
+        });
+
+      // Add dynamic button
+      let buttonCount = 2;
+      document
+        .getElementById("addDynamicBtn")
+        .addEventListener("click", function () {
+          buttonCount++;
+          const container = document.getElementById("dynamicContainer");
+          const newBtn = document.createElement("button");
+          newBtn.className = "dynamic-btn";
+          newBtn.textContent = `Button ${buttonCount}`;
+          container.appendChild(newBtn);
+          logEvent(`➕ Dynamic button added: Button ${buttonCount}`);
+        });
+
+      // Smooth scrolling for navigation
+      document.querySelectorAll("nav a").forEach((link) => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({ behavior: "smooth" });
+            logEvent(`⚡ Smooth scroll to: ${this.textContent}`);
+          }
+        });
+      });
+
+      // Clear log
+      document
+        .getElementById("clearLog")
+        .addEventListener("click", function () {
+          document.getElementById("eventLog").innerHTML =
+            "<div>Event log cleared...</div>";
+        });
+
+      // ======================================
+      // INITIALIZATION
+      // ======================================
+
+      // Initial log
+      logEvent("🎉 Application initialized successfully!");
+      logEvent("👆 Mulai interaksi dengan elemen untuk melihat event bekerja");
+    </script>
+  </body>
+</html>
