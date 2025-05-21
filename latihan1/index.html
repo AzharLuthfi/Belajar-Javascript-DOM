@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan DOM</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        font-family: sans-serif;
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 24px;
+        padding-top: 15px;
+      }
+
+      button {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 0.7rem 1.5rem;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 0.5rem;
+        transition: background 0.3s;
+        width: 180px;
+      }
+
+      button:hover {
+        background: #2980b9;
+      }
+
+      .biru-muda {
+        background-color: #3498db;
+      }
+
+      .merah {
+        background-color: #e74c3c;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="judul">Bermain dengan Warna</h1>
+    <button id="button" type="button">ganti background!</button><br /><br />
+    <input type="range" name="sMerah" />
+    <script src="script.js"></script>
+  </body>
+</html>

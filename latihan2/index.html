@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Latihan 2 | Button Change</title>
+  </head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #kotak {
+      width: 200px;
+      height: 200px;
+      background-color: lightgreen;
+      color: black;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .text {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .icon {
+      font-size: 32px;
+      margin-top: 0;
+    }
+  </style>
+  <body>
+    <div id="kotak">
+      <p class="icon">😁</p>
+      <p class="text">click me!</p>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
