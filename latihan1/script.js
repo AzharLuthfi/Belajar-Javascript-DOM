@@ -25,3 +25,46 @@ acakWarna.addEventListener("click", function randomColor() {
   const b = Math.floor(Math.random() * 256);
   document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 });
+
+// sliderColorChange
+const sMerah = document.querySelector("input[name=sMerah]");
+const sHijau = document.querySelector("input[name=sHijau]");
+const sBiru = document.querySelector("input[name=sBiru]");
+// pake event input agar realtime
+// sMerah.addEventListener("input", function () {})
+sMerah.addEventListener("input", function () {
+  // mengambil nilai dalam elemnet input sebagi berikut input.value;
+  const r = sMerah.value;
+  const g = sHijau.value;
+  const b = sBiru.value;
+  // mengubah warna background
+  document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
+});
+// sHijau.addEventListener("input", function () {})
+sHijau.addEventListener("input", function () {
+  // mengambil nilai dalam elemnet input sebagi berikut input.value;
+  const r = sMerah.value;
+  const g = sHijau.value;
+  const b = sBiru.value;
+  // mengubah warna background
+  document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
+});
+// mengambil nilai dalam elemnet input sebagi berikut input.value;
+sBiru.addEventListener("input", function () {
+  const r = sMerah.value;
+  const g = sHijau.value;
+  const b = sBiru.value;
+  // mengubah warna background
+  document.body.style.backgroundColor = `rgb(${r},${g},${b})`;
+});
+
+const body = document.body;
+body.addEventListener("mousemove", function (event) {
+  // ukuran browser
+  const w = window.innerWidth;
+  // posisi mouse
+  const x = Math.round((event.clientX / w) * 255);
+  const y = Math.round((event.clientY / w) * 255);
+  // mengubah warna background
+  document.body.style.backgroundColor = `rgb(${x},${y},100)`;
+});
