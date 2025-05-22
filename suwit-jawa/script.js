@@ -1,3 +1,4 @@
+// suwit v 0.1
 // const tanya = true;
 // while (tanya) {
 //   // menangkap pilihan player
@@ -43,6 +44,9 @@
 // }
 
 // alert("terimakasih sudah bermain.");
+
+// suwit v 0.2
+
 function pilihanComputer() {
   // menangkap pilihan computer
   // membangkitkan bilangan random
@@ -61,39 +65,56 @@ function getHasil(comp, player) {
   if (player == "semut") return comp == "orang" ? "KALAH" : "MENANG!";
 }
 
-const pGajah = document.querySelector(".gajah");
-pGajah.addEventListener("click", function () {
-  const pilihanPlayer = "gajah";
-  const pilihanComp = pilihanComputer();
-  const hasil = getHasil(pilihanComp, pilihanPlayer);
-  // memanipulasi info
-  const info = document.querySelector(".info");
-  info.innerHTML = `${hasil}`;
-  // manipulasi gambar pilihan komputer
-  const imgComp = document.querySelector(".img-komputer");
-  imgComp.setAttribute("src", `img/${pilihanComp}.png`);
-});
-const pOrang = document.querySelector(".orang");
-pOrang.addEventListener("click", function () {
-  const pilihanPlayer = "orang";
-  const pilihanComp = pilihanComputer();
-  const hasil = getHasil(pilihanComp, pilihanPlayer);
-  // memanipulasi info
-  const info = document.querySelector(".info");
-  info.innerHTML = `${hasil}`;
-  // manipulasi gambar pilihan komputer
-  const imgComp = document.querySelector(".img-komputer");
-  imgComp.setAttribute("src", `img/${pilihanComp}.png`);
-});
-const pSemut = document.querySelector(".semut");
-pSemut.addEventListener("click", function () {
-  const pilihanPlayer = "semut";
-  const pilihanComp = pilihanComputer();
-  const hasil = getHasil(pilihanComp, pilihanPlayer);
-  // memanipulasi info
-  const info = document.querySelector(".info");
-  info.innerHTML = `${hasil}`;
-  // manipulasi gambar pilihan komputer
-  const imgComp = document.querySelector(".img-komputer");
-  imgComp.setAttribute("src", `img/${pilihanComp}.png`);
+// const pGajah = document.querySelector(".gajah");
+// pGajah.addEventListener("click", function () {
+//   const pilihanPlayer = "gajah";
+//   const pilihanComp = pilihanComputer();
+//   const hasil = getHasil(pilihanComp, pilihanPlayer);
+//   // memanipulasi info
+//   const info = document.querySelector(".info");
+//   info.innerHTML = `${hasil}`;
+//   // manipulasi gambar pilihan komputer
+//   const imgComp = document.querySelector(".img-komputer");
+//   imgComp.setAttribute("src", `img/${pilihanComp}.png`);
+// });
+// const pOrang = document.querySelector(".orang");
+// pOrang.addEventListener("click", function () {
+//   const pilihanPlayer = "orang";
+//   const pilihanComp = pilihanComputer();
+//   const hasil = getHasil(pilihanComp, pilihanPlayer);
+//   // memanipulasi info
+//   const info = document.querySelector(".info");
+//   info.innerHTML = `${hasil}`;
+//   // manipulasi gambar pilihan komputer
+//   const imgComp = document.querySelector(".img-komputer");
+//   imgComp.setAttribute("src", `img/${pilihanComp}.png`);
+// });
+// const pSemut = document.querySelector(".semut");
+// pSemut.addEventListener("click", function () {
+//   const pilihanPlayer = "semut";
+//   const pilihanComp = pilihanComputer();
+//   const hasil = getHasil(pilihanComp, pilihanPlayer);
+//   // memanipulasi info
+//   const info = document.querySelector(".info");
+//   info.innerHTML = `${hasil}`;
+//   // manipulasi gambar pilihan komputer
+//   const imgComp = document.querySelector(".img-komputer");
+//   imgComp.setAttribute("src", `img/${pilihanComp}.png`);
+// });
+
+const pilihan = document.querySelectorAll("li img");
+pilihan.forEach(function (pil) {
+  pil.addEventListener("click", function () {
+    console.log(pil);
+
+    const pilihanPlayer = pil.className;
+    const pilihanComp = pilihanComputer();
+    const hasil = getHasil(pilihanComp, pilihanPlayer);
+    // memanipulasi info
+    const info = document.querySelector(".info");
+    info.innerHTML = `${hasil}`;
+    // manipulasi gambar pilihan komputer
+    const imgComp = document.querySelector(".img-komputer");
+    imgComp.setAttribute("src", `img/${pilihanComp}.png`);
+  });
 });
