@@ -101,20 +101,38 @@ function getHasil(comp, player) {
 //   const imgComp = document.querySelector(".img-komputer");
 //   imgComp.setAttribute("src", `img/${pilihanComp}.png`);
 // });
-
+function putar() {
+  const imgComputer = document.querySelector(".img-komputer");
+  const gambar = ["gajah", "orang", "semut"];
+  let i = 0;
+  // set variabel waktu saat ini
+  const waktuMulai = new Date().getTime();
+  // set interval
+  setInterval(() => {
+    if (new Date().getTime() - waktuMulai > 1000) {
+      clearInterval();
+      return;
+    }
+    imgComputer.setAttribute(`src`, `img/${gambar[i++]}.png`);
+    if (i == gambar.length) i = 0;
+  }, 100);
+}
 const pilihan = document.querySelectorAll("li img");
 pilihan.forEach(function (pil) {
   pil.addEventListener("click", function () {
-    console.log(pil);
-
     const pilihanPlayer = pil.className;
     const pilihanComp = pilihanComputer();
     const hasil = getHasil(pilihanComp, pilihanPlayer);
-    // memanipulasi info
-    const info = document.querySelector(".info");
-    info.innerHTML = `${hasil}`;
-    // manipulasi gambar pilihan komputer
-    const imgComp = document.querySelector(".img-komputer");
-    imgComp.setAttribute("src", `img/${pilihanComp}.png`);
+    // fungsi putar
+    putar(); // fungsi ini akan bekerja selama 1 detik
+    // set untuk menunggu melakukan block ini selama 1 detik sama dengan interval putar
+    setTimeout(() => {
+      // memanipulasi info
+      const info = document.querySelector(".info");
+      info.innerHTML = `${hasil}`;
+      // manipulasi gambar pilihan komputer
+      const imgComp = document.querySelector(".img-komputer");
+      imgComp.setAttribute("src", `img/${pilihanComp}.png`);
+    }, 1000);
   });
 });
