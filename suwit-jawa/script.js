@@ -117,12 +117,24 @@ function putar() {
     if (i == gambar.length) i = 0;
   }, 100);
 }
+// membuat fungsi score
+let currentScore = 0; // inisialisasi variabel score sebagai 0
+function score(answer, score) {
+  const nilai = document.querySelector(".score");
+
+  if (answer === "MENANG!") {
+    score++;
+    nilai.innerHTML = `Score: ${score}`;
+  }
+  return score;
+}
 const pilihan = document.querySelectorAll("li img");
 pilihan.forEach(function (pil) {
   pil.addEventListener("click", function () {
     const pilihanPlayer = pil.className;
     const pilihanComp = pilihanComputer();
     const hasil = getHasil(pilihanComp, pilihanPlayer);
+
     // fungsi putar
     putar(); // fungsi ini akan bekerja selama 1 detik
     // set untuk menunggu melakukan block ini selama 1 detik sama dengan interval putar
@@ -133,6 +145,8 @@ pilihan.forEach(function (pil) {
       // manipulasi gambar pilihan komputer
       const imgComp = document.querySelector(".img-komputer");
       imgComp.setAttribute("src", `img/${pilihanComp}.png`);
+      // panggil function score dengan parameter yang benar
+      currentScore = score(hasil, currentScore);
     }, 1000);
   });
 });

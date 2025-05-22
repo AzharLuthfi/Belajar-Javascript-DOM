@@ -246,3 +246,9 @@ img {
 .orang:active {
   top: 2px;
 }
+
+.score {
+  font-family: Arial, Helvetica, sans-serif;
+  padding-left: 15px;
+  font-size: 25px;
+}
